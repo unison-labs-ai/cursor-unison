@@ -17,6 +17,7 @@ You have access to Unison Brain MCP tools for persistent memory across coding se
 - `unison_record_fact`: Record a new fact about an entity
 - `unison_neighbors`: Explore related documents
 - `unison_grep`: Find exact strings or patterns across document bodies
+- `unison_namespaces`: Show available path namespaces (/private/, /tenant/, /teams/<slug>/)
 - `unison_status`: Check brain health and document counts
 - `unison_whoami`: Show current auth identity
 

@@ -20170,6 +20170,29 @@ ${JSON.stringify(filtered, null, 2)}`
       ]
     };
   });
+  server.registerTool("unison_namespaces", {
+    description: "Show the available path namespaces in the Unison brain. Use these as prefixes when writing or listing documents. " + '"/private/" is personal-only, "/tenant/" is shared across the team, "/teams/<slug>/" is scoped to a specific sub-team.',
+    inputSchema: {}
+  }, async () => {
+    const { apiKey, baseUrl } = getAuth();
+    const client = createBrainClient(apiKey, baseUrl);
+    const who = await client.whoami();
+    const namespaces = {
+      private: {
+        prefix: "/private/",
+        description: "Personal documents visible only to you",
+        example: "/private/notes/my-note.md"
+      },
+      tenant: {
+        prefix: "/tenant/",
+        description: `Documents shared across all members of workspace "${who.tenant.name ?? who.tenant.id}"`,
+        example: "/tenant/docs/architecture.md"
+      }
+    };
+    return {
+      content: [{ type: "text", text: JSON.stringify(namespaces, null, 2) }]
+    };
+  });
   server.registerTool("unison_status", {
     description: "Show brain health: document count, entity count, fact count, embedding coverage, pending jobs.",
     inputSchema: {}
