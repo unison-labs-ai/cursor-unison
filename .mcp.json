@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "unison-brain": {
+      "command": "bunx",
+      "args": ["--bun", "cursor-unison@latest", "mcp"]
+    }
+  }
+}
