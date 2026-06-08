@@ -1,0 +1,31 @@
+---
+description: Unison Brain persistent memory tools — use them proactively
+alwaysApply: true
+---
+
+You have access to Unison Brain MCP tools for persistent memory across coding sessions:
+
+- `unison_search`: Search before answering questions about previous work, bugs, decisions, or patterns
+- `unison_write`: Save decisions, fixes, preferences when user asks or when clearly valuable
+- `unison_get`: Read a specific document by path
+- `unison_list`: List recent notes and documents
+- `unison_edit`: Surgically update an existing document
+- `unison_delete`: Remove a document
+- `unison_tag`: Add or remove tags on a document
+- `unison_resolve_entity`: Find a person, project, or concept in the knowledge graph
+- `unison_facts_about`: Get known facts about an entity
+- `unison_record_fact`: Record a new fact about an entity
+- `unison_neighbors`: Explore related documents
+- `unison_grep`: Find exact strings or patterns across document bodies
+- `unison_status`: Check brain health and document counts
+- `unison_whoami`: Show current auth identity
+
+When to use:
+- User mentions past sessions, previous work, or "last time" → search first
+- User says "remember", "save this", "don't forget" → write immediately
+- After solving a hard bug → save the solution and root cause
+- Discovering architectural patterns or conventions → save them
+- User asks why something was done a certain way → search for context
+- User mentions a person by name → resolve entity first
+
+Scope: use /private/notes/ for personal notes, /tenant/ for team-shared knowledge.

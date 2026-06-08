@@ -1,0 +1,26 @@
+# cursor-unison
+
+> Persistent AI memory for Cursor — a plugin that connects every Cursor session
+> to a hosted Unison brain: search context injected at session start, transcripts
+> saved at session end, and 16 MCP tools for explicit memory control mid-session.
+
+**Agents: start with [AGENTS.md](AGENTS.md)** — install, authenticate with a
+`usk_` key, and verify the MCP wiring in under five minutes.
+
+## Docs
+- [README.md](README.md): install, quickstart, MCP tools, configuration reference
+- [AGENTS.md](AGENTS.md): agent-focused guide — install, auth, MCP wiring, and contributing
+- [CONTRIBUTING.md](CONTRIBUTING.md): build commands, conventions, PR process
+- [SECURITY.md](SECURITY.md): how to report vulnerabilities
+
+## Usage
+- Set `UNISON_TOKEN=usk_live_...` and `UNISON_API_URL=https://api.unisonlabs.ai`
+- Install from the Cursor Marketplace, or run `bun run build` locally and point `.cursor/mcp.json` at `dist/mcp-server.js`
+- CLI: `bunx cursor-unison@latest login --email you@example.com`
+- MCP: 16 tools covering search, read/write, edit, delete, list, tag, grep, entity resolution, facts, graph traversal, config, and status
+
+## Examples
+- Authenticate: `bunx cursor-unison@latest login --email you@example.com`
+- Recover a key: `bunx cursor-unison@latest login --email you@example.com --recover`
+- Check status: `bunx cursor-unison@latest status`
+- Start MCP server: `bunx cursor-unison@latest mcp`
