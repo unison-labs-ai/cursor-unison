@@ -20272,6 +20272,29 @@ ${JSON.stringify(filtered, null, 2)}`
       ]
     };
   });
+  server.registerTool("unison_namespaces", {
+    description: "Show the available path namespaces in the Unison brain. Use these as prefixes when writing or listing documents. " + '"/private/" is personal-only, "/tenant/" is shared across the team, "/teams/<slug>/" is scoped to a specific sub-team.',
+    inputSchema: {}
+  }, async () => {
+    const { apiKey, baseUrl } = getAuth();
+    const client = createBrainClient(apiKey, baseUrl);
+    const who = await client.whoami();
+    const namespaces = {
+      private: {
+        prefix: "/private/",
+        description: "Personal documents visible only to you",
+        example: "/private/notes/my-note.md"
+      },
+      tenant: {
+        prefix: "/tenant/",
+        description: `Documents shared across all members of workspace "${who.tenant.name ?? who.tenant.id}"`,
+        example: "/tenant/docs/architecture.md"
+      }
+    };
+    return {
+      content: [{ type: "text", text: JSON.stringify(namespaces, null, 2) }]
+    };
+  });
   server.registerTool("unison_status", {
     description: "Show brain health: document count, entity count, fact count, embedding coverage, pending jobs.",
     inputSchema: {}
@@ -20539,26 +20562,26 @@ switch (command) {
     break;
   }
   case "status": {
-    const creds = loadCredentials();
-    if (!creds) {
-      console.log("Not authenticated. Run `cursor-unison login --email you@example.com`.");
-      break;
-    }
-    console.log(`Authenticated since ${creds.createdAt}`);
-    console.log(`API key: ${creds.apiKey.slice(0, 10)}...${creds.apiKey.slice(-4)}`);
     const config2 = loadConfig();
     const apiKey = getApiKey(config2);
-    if (apiKey) {
-      try {
-        const client = createBrainClient(apiKey, config2.baseUrl);
-        const who = await client.whoami();
-        console.log(`Tenant: ${who.tenant.name ?? who.tenant.id}`);
-        console.log(`Scopes: ${who.scopes.join(", ")}`);
-        const status = await client.status();
-        console.log(`Brain: ${status.docCount} docs, ${status.entityCount} entities, ${status.factCount} facts`);
-      } catch (err) {
-        console.error(`Could not reach brain: ${err instanceof Error ? err.message : err}`);
-      }
+    if (!apiKey) {
+      console.log("Not authenticated. Run `cursor-unison login --email you@example.com` or set UNISON_TOKEN.");
+      break;
+    }
+    const creds = loadCredentials();
+    if (creds) {
+      console.log(`Authenticated since ${creds.createdAt}`);
+    }
+    console.log(`API key: ${apiKey.slice(0, 10)}...${apiKey.slice(-4)}`);
+    try {
+      const client = createBrainClient(apiKey, config2.baseUrl);
+      const who = await client.whoami();
+      console.log(`Tenant: ${who.tenant.name ?? who.tenant.id}`);
+      console.log(`Scopes: ${who.scopes.join(", ")}`);
+      const status = await client.status();
+      console.log(`Brain: ${status.docCount} docs, ${status.entityCount} entities, ${status.factCount} facts`);
+    } catch (err) {
+      console.error(`Could not reach brain: ${err instanceof Error ? err.message : err}`);
     }
     break;
   }

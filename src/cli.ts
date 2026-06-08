@@ -45,30 +45,28 @@ switch (command) {
   }
 
   case "status": {
-    const creds = loadCredentials();
-    if (!creds) {
-      console.log("Not authenticated. Run `cursor-unison login --email you@example.com`.");
-      break;
-    }
-    console.log(`Authenticated since ${creds.createdAt}`);
-    console.log(`API key: ${creds.apiKey.slice(0, 10)}...${creds.apiKey.slice(-4)}`);
-
-    // Verify by calling whoami
     const config = loadConfig();
     const apiKey = getApiKey(config);
-    if (apiKey) {
-      try {
-        const client = createBrainClient(apiKey, config.baseUrl);
-        const who = await client.whoami();
-        console.log(`Tenant: ${who.tenant.name ?? who.tenant.id}`);
-        console.log(`Scopes: ${who.scopes.join(", ")}`);
-        const status = await client.status();
-        console.log(
-          `Brain: ${status.docCount} docs, ${status.entityCount} entities, ${status.factCount} facts`,
-        );
-      } catch (err) {
-        console.error(`Could not reach brain: ${err instanceof Error ? err.message : err}`);
-      }
+    if (!apiKey) {
+      console.log("Not authenticated. Run `cursor-unison login --email you@example.com` or set UNISON_TOKEN.");
+      break;
+    }
+    const creds = loadCredentials();
+    if (creds) {
+      console.log(`Authenticated since ${creds.createdAt}`);
+    }
+    console.log(`API key: ${apiKey.slice(0, 10)}...${apiKey.slice(-4)}`);
+    try {
+      const client = createBrainClient(apiKey, config.baseUrl);
+      const who = await client.whoami();
+      console.log(`Tenant: ${who.tenant.name ?? who.tenant.id}`);
+      console.log(`Scopes: ${who.scopes.join(", ")}`);
+      const status = await client.status();
+      console.log(
+        `Brain: ${status.docCount} docs, ${status.entityCount} entities, ${status.factCount} facts`,
+      );
+    } catch (err) {
+      console.error(`Could not reach brain: ${err instanceof Error ? err.message : err}`);
     }
     break;
   }

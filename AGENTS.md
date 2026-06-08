@@ -13,7 +13,7 @@ Follows the [AGENTS.md](https://agents.md/) convention. Human contributors: see 
 
 cursor-unison adds persistent, searchable memory to every Cursor AI session.
 At session start the plugin injects relevant brain documents as context. At
-session end it saves the conversation transcript. Between those bookends, 16
+session end it saves the conversation transcript. Between those bookends, 17
 MCP tools let the AI read, write, search, and navigate the knowledge graph
 explicitly.
 
@@ -77,7 +77,7 @@ Available MCP tools: `unison_search`, `unison_write`, `unison_get`,
 `unison_edit`, `unison_delete`, `unison_list`, `unison_tag`, `unison_grep`,
 `unison_resolve_entity`, `unison_facts_about`, `unison_record_fact`,
 `unison_neighbors`, `unison_status`, `unison_whoami`, `unison_get_config`,
-`unison_set_config`.
+`unison_set_config`, `unison_namespaces`.
 
 ### The session loop
 
@@ -102,7 +102,7 @@ A single-package TypeScript plugin for Cursor, built with Bun. Source lives
 under `src/`:
 
 - `src/cli.ts` — the `cursor-unison` CLI entry point
-- `src/mcp-server.ts` — the MCP server (16 tools)
+- `src/mcp-server.ts` — the MCP server (17 tools)
 - `src/client.ts` — thin wrapper around `@unisonlabs/sdk`
 - `src/config.ts` — config loading (env vars + global + project JSON)
 - `src/auth.ts` — OTP-based auth flow + credential storage
