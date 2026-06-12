@@ -32,4 +32,4 @@ Server-side or account issues should also go to the same address.
 The plugin stores a bearer token (`usk_...`) in `~/.config/unison/config.json`
 with `0600` permissions, or reads it from the `UNISON_TOKEN` environment
 variable. The token is never logged or transmitted anywhere except the
-configured API host (`UNISON_API_URL`, default `https://api.unisonlabs.ai`).
+configured API host (`UNISON_API_URL`, default `https://brain.unisonlabs.ai`).

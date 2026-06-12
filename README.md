@@ -46,7 +46,7 @@ You'll receive a verification code by email. Enter it when prompted. Your `usk_`
 | Variable | Description |
 |---|---|
 | `UNISON_TOKEN` | API key (`usk_live_...`) — overrides all other sources |
-| `UNISON_API_URL` | Override the API base URL (default: `https://api.unisonlabs.ai`) |
+| `UNISON_API_URL` | Override the API base URL (default: `https://brain.unisonlabs.ai`) |
 
 ### Global config — `~/.config/cursor/unison.json`
 
@@ -54,7 +54,7 @@ User-wide defaults, applies to all projects.
 
 ```json
 {
-  "baseUrl": "https://api.unisonlabs.ai",
+  "baseUrl": "https://brain.unisonlabs.ai",
   "maxResults": 10,
   "maxProjectDocs": 5,
   "injectStatus": false,
@@ -76,7 +76,7 @@ Per-workspace overrides. Add `.cursor/.unison/` to `.gitignore` if it contains a
 
 | Option | Description | Default |
 |---|---|---|
-| `baseUrl` | Unison API base URL | `https://api.unisonlabs.ai` |
+| `baseUrl` | Unison API base URL | `https://brain.unisonlabs.ai` |
 | `maxResults` | Max results from `unison_search` | `10` |
 | `maxProjectDocs` | Max notes injected at session start | `5` |
 | `injectStatus` | Inject brain status at session start | `false` |
@@ -116,7 +116,7 @@ A recovery code is emailed to the address. A fresh `usk_` key is minted after ve
       "args": ["-y", "@unisonlabs/mcp"],
       "env": {
         "UNISON_TOKEN": "usk_live_...",
-        "UNISON_API_URL": "https://api.unisonlabs.ai"
+        "UNISON_API_URL": "https://brain.unisonlabs.ai"
       }
     }
   }

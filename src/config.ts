@@ -30,7 +30,7 @@ export interface Config {
 }
 
 const DEFAULTS: Omit<Config, "apiKey"> = {
-  baseUrl: "https://api.unisonlabs.ai",
+  baseUrl: "https://brain.unisonlabs.ai",
   maxResults: 10,
   maxProjectDocs: 5,
   injectStatus: false,

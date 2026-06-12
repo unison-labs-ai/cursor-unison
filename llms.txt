@@ -14,7 +14,7 @@
 - [SECURITY.md](SECURITY.md): how to report vulnerabilities
 
 ## Usage
-- Set `UNISON_TOKEN=usk_live_...` and `UNISON_API_URL=https://api.unisonlabs.ai`
+- Set `UNISON_TOKEN=usk_live_...` and `UNISON_API_URL=https://brain.unisonlabs.ai`
 - Install from the Cursor Marketplace, or run `bun run build` locally and point `.cursor/mcp.json` at `dist/mcp-server.js`
 - CLI: `bunx cursor-unison@latest login --email you@example.com`
 - MCP: 16 tools covering search, read/write, edit, delete, list, tag, grep, entity resolution, facts, graph traversal, config, and status
