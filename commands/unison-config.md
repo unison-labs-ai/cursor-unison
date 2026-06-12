@@ -7,7 +7,7 @@ Create or edit `.cursor/.unison/config.json` at your project root:
 
 ```json
 {
-  "baseUrl": "https://api.unisonlabs.ai",
+  "baseUrl": "https://brain.unisonlabs.ai",
   "maxResults": 10,
   "maxProjectDocs": 5,
   "injectStatus": false,
@@ -16,7 +16,7 @@ Create or edit `.cursor/.unison/config.json` at your project root:
 ```
 
 Settings:
-- `baseUrl`: Override the Unison API URL (default: https://api.unisonlabs.ai)
+- `baseUrl`: Override the Unison API URL (default: https://brain.unisonlabs.ai)
 - `maxResults`: Max search results returned by `unison_search` (default: 10)
 - `maxProjectDocs`: Max notes injected at session start (default: 5)
 - `injectStatus`: Whether to inject brain status at session start (default: false)
