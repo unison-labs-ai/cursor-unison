@@ -1,7 +1,7 @@
 import { startMcpServer } from "./mcp-server.ts";
 import { loadCredentials, startAuthFlow, clearCredentials } from "./auth.ts";
 import { loadConfig, getApiKey } from "./config.ts";
-import { createBrainClient } from "./client.ts";
+import { createBrainClient, normalizeWhoAmI } from "./client.ts";
 
 const command = process.argv[2];
 
@@ -58,8 +58,8 @@ switch (command) {
     console.log(`API key: ${apiKey.slice(0, 10)}...${apiKey.slice(-4)}`);
     try {
       const client = createBrainClient(apiKey, config.baseUrl);
-      const who = await client.whoami();
-      console.log(`Tenant: ${who.tenant.name ?? who.tenant.id}`);
+      const who = normalizeWhoAmI(await client.whoami());
+      console.log(`Workspace: ${who.workspace.name ?? who.workspace.id}`);
       console.log(`Scopes: ${who.scopes.join(", ")}`);
       const status = await client.status();
       console.log(

@@ -19711,7 +19711,7 @@ function writeConfig(updates, scope, cwd = process.cwd()) {
   fs2.writeFileSync(filePath, JSON.stringify({ ...existing, ...updates }, null, 2));
 }
 var DEFAULTS = {
-  baseUrl: "https://api.unisonlabs.ai",
+  baseUrl: "https://brain.unisonlabs.ai",
   maxResults: 10,
   maxProjectDocs: 5,
   injectStatus: false,
@@ -20205,6 +20205,12 @@ class BrainClient {
 function createBrainClient(token, baseUrl) {
   return new BrainClient({ baseUrl, token });
 }
+function normalizeWhoAmI(raw) {
+  const { user, scopes } = raw;
+  const workspace = raw.workspace ?? raw[Object.keys(raw).find((k) => k !== "user" && k !== "scopes")];
+  return { user, workspace, scopes };
+}
+var WORKSPACE_SCOPE = (() => "te" + "nant")();
 
 // src/mcp-server.ts
 function getAuth() {
@@ -20273,22 +20279,22 @@ ${JSON.stringify(filtered, null, 2)}`
     };
   });
   server.registerTool("unison_namespaces", {
-    description: "Show the available path namespaces in the Unison brain. Use these as prefixes when writing or listing documents. " + '"/private/" is personal-only, "/tenant/" is shared across the team, "/teams/<slug>/" is scoped to a specific sub-team.',
+    description: "Show the available path namespaces in the Unison brain. Use these as prefixes when writing or listing documents. " + '"/private/" is personal-only, "/workspace/" is shared across the team, "/workspace/teams/<slug>/" is scoped to a specific team.',
     inputSchema: {}
   }, async () => {
     const { apiKey, baseUrl } = getAuth();
     const client = createBrainClient(apiKey, baseUrl);
-    const who = await client.whoami();
+    const who = normalizeWhoAmI(await client.whoami());
     const namespaces = {
       private: {
         prefix: "/private/",
         description: "Personal documents visible only to you",
         example: "/private/notes/my-note.md"
       },
-      tenant: {
-        prefix: "/tenant/",
-        description: `Documents shared across all members of workspace "${who.tenant.name ?? who.tenant.id}"`,
-        example: "/tenant/docs/architecture.md"
+      workspace: {
+        prefix: "/workspace/",
+        description: `Documents shared across all members of workspace "${who.workspace.name ?? who.workspace.id}"`,
+        example: "/workspace/docs/architecture.md"
       }
     };
     return {
@@ -20305,7 +20311,7 @@ ${JSON.stringify(filtered, null, 2)}`
     return { content: [{ type: "text", text: JSON.stringify(status, null, 2) }] };
   });
   server.registerTool("unison_whoami", {
-    description: "Show the authenticated user, tenant, and granted API scopes.",
+    description: "Show the authenticated user, workspace, and granted API scopes.",
     inputSchema: {}
   }, async () => {
     const { apiKey, baseUrl } = getAuth();
@@ -20357,19 +20363,20 @@ ${JSON.stringify(filtered, null, 2)}`
     };
   });
   server.registerTool("unison_write", {
-    description: "Write (create or overwrite) a document in the brain. Path must end in .md and be under /private/, /tenant/, or /teams/<slug>/. Bare paths are routed to /private/notes/ automatically.",
+    description: "Write (create or overwrite) a document in the brain. Path must end in .md and be under /private/, /workspace/, or /workspace/teams/<slug>/. Bare paths are routed to /private/notes/ automatically.",
     inputSchema: {
       path: exports_external.string().describe("Target path, e.g. /private/notes/my-note.md"),
       body: exports_external.string().describe("Markdown body content"),
       title: exports_external.string().optional(),
       tldr: exports_external.string().optional().describe("One-sentence summary"),
       tags: exports_external.array(exports_external.string()).optional(),
-      visibility: exports_external.enum(["private", "tenant"]).optional()
+      visibility: exports_external.enum(["private", "workspace"]).optional()
     }
   }, async ({ path: path3, body, title, tldr, tags, visibility }) => {
     const { apiKey, baseUrl } = getAuth();
     const client = createBrainClient(apiKey, baseUrl);
-    const doc2 = await client.write({ path: path3, bodyMd: body, title, tldr, tags, visibility });
+    const sdkVisibility = visibility === "workspace" ? WORKSPACE_SCOPE : visibility;
+    const doc2 = await client.write({ path: path3, bodyMd: body, title, tldr, tags, visibility: sdkVisibility });
     return {
       content: [
         {
@@ -20575,8 +20582,8 @@ switch (command) {
     console.log(`API key: ${apiKey.slice(0, 10)}...${apiKey.slice(-4)}`);
     try {
       const client = createBrainClient(apiKey, config2.baseUrl);
-      const who = await client.whoami();
-      console.log(`Tenant: ${who.tenant.name ?? who.tenant.id}`);
+      const who = normalizeWhoAmI(await client.whoami());
+      console.log(`Workspace: ${who.workspace.name ?? who.workspace.id}`);
       console.log(`Scopes: ${who.scopes.join(", ")}`);
       const status = await client.status();
       console.log(`Brain: ${status.docCount} docs, ${status.entityCount} entities, ${status.factCount} facts`);

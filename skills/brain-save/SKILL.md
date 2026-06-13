@@ -4,7 +4,7 @@ description: Save important information to the Unison brain. Use when user expli
 ---
 
 1. Extract the key insight, decision, or solution to save
-2. Choose path: /private/notes/ for personal, /tenant/ for team-shared
+2. Choose path: /private/notes/ for personal, /workspace/ for team-shared
 3. Choose tags: one or more of preference, architecture, error-solution, project-config, learned-pattern, decision
 4. Write a concise tldr (one sentence) and a full body in Markdown
 5. Call `unison_write` with the path, body, title, tldr, and tags

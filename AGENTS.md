@@ -51,7 +51,7 @@ overrides the stored key. Never write the key to any file that is committed.
 bunx cursor-unison@latest status
 ```
 
-Expected output: tenant name, scopes, and doc/entity/fact counts.
+Expected output: workspace name, scopes, and doc/entity/fact counts.
 
 ### 4. MCP wiring
 
