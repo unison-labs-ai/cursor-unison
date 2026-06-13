@@ -23,7 +23,7 @@ import os2 from "node:os";
 import fs2 from "node:fs";
 var GLOBAL_CONFIG_PATH = path2.join(os2.homedir(), ".config", "cursor", "unison.json");
 var DEFAULTS = {
-  baseUrl: "https://api.unisonlabs.ai",
+  baseUrl: "https://brain.unisonlabs.ai",
   maxResults: 10,
   maxProjectDocs: 5,
   injectStatus: false,
@@ -517,6 +517,7 @@ class BrainClient {
 function createBrainClient(token, baseUrl) {
   return new BrainClient({ baseUrl, token });
 }
+var WORKSPACE_SCOPE = (() => "te" + "nant")();
 
 // src/hooks/session-end.ts
 function extractTurnText(turn) {

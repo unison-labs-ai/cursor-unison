@@ -35,7 +35,7 @@ You'll receive a verification code by email. Enter it when prompted. Your `usk_`
 | `unison_record_fact` | Record a new fact about an entity |
 | `unison_neighbors` | Explore related documents via graph edges |
 | `unison_status` | Brain health: doc/entity/fact counts, pending jobs |
-| `unison_whoami` | Show authenticated user, tenant, and scopes |
+| `unison_whoami` | Show authenticated user, workspace, and scopes |
 | `unison_get_config` | Show current configuration and config file paths |
 | `unison_set_config` | Update configuration at project or global scope |
 
@@ -70,7 +70,7 @@ Per-workspace overrides. Add `.cursor/.unison/` to `.gitignore` if it contains a
 {
   "maxResults": 15,
   "maxProjectDocs": 8,
-  "notesPrefix": "/tenant/eng/"
+  "notesPrefix": "/workspace/eng/"
 }
 ```
 
@@ -91,8 +91,8 @@ Documents live in the Unison brain filesystem. All paths must end in `.md`.
 | Root | Visibility |
 |---|---|
 | `/private/...` | Private to you |
-| `/tenant/...` | Visible to your whole team |
-| `/teams/<slug>/...` | Visible to a specific team |
+| `/workspace/...` | Visible to your whole workspace |
+| `/system/...` | Read-only system documents |
 
 Bare paths (e.g. `my-note.md`) are routed to `/private/notes/` automatically.
 

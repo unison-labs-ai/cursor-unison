@@ -122,7 +122,7 @@ export async function startAuthFlow(opts: {
     return { success: false, error: (err as any)?.error?.message ?? "Verification failed" };
   }
 
-  const data = await verifyRes.json() as { verified: boolean; apiKey?: string; tenantId?: string };
+  const data = await verifyRes.json() as { verified: boolean; apiKey?: string; workspaceId?: string };
   if (!data.verified) {
     return { success: false, error: "Verification returned verified=false" };
   }

@@ -2,7 +2,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { loadConfig, getApiKey, writeConfig, getProjectConfigPath, GLOBAL_CONFIG_PATH } from "./config.ts";
-import { createBrainClient } from "./client.ts";
+import { createBrainClient, normalizeWhoAmI, WORKSPACE_SCOPE } from "./client.ts";
+import type { Visibility } from "@unisonlabs/sdk";
 
 function getAuth() {
   const config = loadConfig();
@@ -92,27 +93,27 @@ export async function startMcpServer() {
     {
       description:
         "Show the available path namespaces in the Unison brain. Use these as prefixes when writing or listing documents. " +
-        '"/private/" is personal-only, "/tenant/" is shared across the team, "/teams/<slug>/" is scoped to a specific sub-team.',
+        '"/private/" is personal-only, "/workspace/" is shared across the team, "/workspace/teams/<slug>/" is scoped to a specific team.',
       inputSchema: {},
     },
     async () => {
       const { apiKey, baseUrl } = getAuth();
       const client = createBrainClient(apiKey, baseUrl);
-      const who = await client.whoami();
+      const who = normalizeWhoAmI(await client.whoami());
       const namespaces: Record<string, { prefix: string; description: string; example: string }> = {
         private: {
           prefix: "/private/",
           description: "Personal documents visible only to you",
           example: "/private/notes/my-note.md",
         },
-        tenant: {
-          prefix: "/tenant/",
-          description: `Documents shared across all members of workspace "${who.tenant.name ?? who.tenant.id}"`,
-          example: "/tenant/docs/architecture.md",
+        workspace: {
+          prefix: "/workspace/",
+          description: `Documents shared across all members of workspace "${who.workspace.name ?? who.workspace.id}"`,
+          example: "/workspace/docs/architecture.md",
         },
       };
-      // teams/<slug>/ namespaces are available if the tenant has sub-teams;
-      // those are enumerable via /v1/teams (not in current SDK whoami shape).
+      // workspace/teams/<slug>/ namespaces are available if the workspace has sub-teams;
+      // those are enumerable via /v1/workspaces/teams (not in current SDK whoami shape).
       return {
         content: [{ type: "text", text: JSON.stringify(namespaces, null, 2) }],
       };
@@ -137,7 +138,7 @@ export async function startMcpServer() {
   server.registerTool(
     "unison_whoami",
     {
-      description: "Show the authenticated user, tenant, and granted API scopes.",
+      description: "Show the authenticated user, workspace, and granted API scopes.",
       inputSchema: {},
     },
     async () => {
@@ -216,20 +217,21 @@ export async function startMcpServer() {
     "unison_write",
     {
       description:
-        "Write (create or overwrite) a document in the brain. Path must end in .md and be under /private/, /tenant/, or /teams/<slug>/. Bare paths are routed to /private/notes/ automatically.",
+        "Write (create or overwrite) a document in the brain. Path must end in .md and be under /private/, /workspace/, or /workspace/teams/<slug>/. Bare paths are routed to /private/notes/ automatically.",
       inputSchema: {
         path: z.string().describe("Target path, e.g. /private/notes/my-note.md"),
         body: z.string().describe("Markdown body content"),
         title: z.string().optional(),
         tldr: z.string().optional().describe("One-sentence summary"),
         tags: z.array(z.string()).optional(),
-        visibility: z.enum(["private", "tenant"]).optional(),
+        visibility: z.enum(["private", "workspace"]).optional(),
       },
     },
     async ({ path, body, title, tldr, tags, visibility }) => {
       const { apiKey, baseUrl } = getAuth();
       const client = createBrainClient(apiKey, baseUrl);
-      const doc = await client.write({ path, bodyMd: body, title, tldr, tags, visibility });
+      const sdkVisibility = visibility === "workspace" ? WORKSPACE_SCOPE : visibility as Visibility | undefined;
+      const doc = await client.write({ path, bodyMd: body, title, tldr, tags, visibility: sdkVisibility });
       return {
         content: [
           {
