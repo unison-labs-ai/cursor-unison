@@ -1,6 +1,34 @@
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/unison-labs-ai/unison-brain/main/assets/brain.svg" width="140" />
+
 # cursor-unison
 
-Persistent AI memory for Cursor — powered by [Unison](https://unisonlabs.ai).
+**Cursor forgets everything the moment the tab closes. Give it a memory.**
+
+Persistent AI memory for Cursor — powered by the [Unison brain](https://unisonlabs.ai).
+
+[![CI](https://github.com/unison-labs-ai/cursor-unison/actions/workflows/ci.yml/badge.svg)](https://github.com/unison-labs-ai/cursor-unison/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Stars](https://img.shields.io/github/stars/unison-labs-ai/cursor-unison?style=social)](https://github.com/unison-labs-ai/cursor-unison)
+
+[**Why**](#with-unison-vs-without) • [**Install**](#install) • [**MCP Tools**](#mcp-tools) • [**Configuration**](#configuration) • [**Document paths**](#document-paths) • [**Development**](#development)
+
+</div>
+
+---
+
+### With Unison vs. without
+
+| Without Unison | With Unison |
+|---|---|
+| You re-explain your stack every new Cursor session | Brain documents are injected at session start — Cursor already knows |
+| Architecture decisions live only in your head or a stale `.cursorrules` | Decisions are written to the brain by the agent; retrieved next session automatically |
+| Switch machines or repos → blank slate | One brain, every machine, every project — context travels with you |
+| `@codebase` search finds code; it forgets what you decided and why | `unison_search` finds decisions, people, patterns — the *why*, not just the code |
+| Teammate onboards and re-asks every question you've already answered | `/workspace/...` docs are visible to your whole workspace, not just you |
+
+---
 
 ## Install
 
@@ -139,3 +167,31 @@ bun run build   # compiles all dist/ files
 5. **Restart Cursor** after changing `.cursor/mcp.json`.
 
 To test in a different project, add the `unison-brain` entry from `.mcp.json` to that project's MCP config with `dist/mcp-server.js` resolved to an absolute path.
+
+## Star history
+
+If this saves you from re-explaining your codebase one more time, leave a ⭐ — it helps others find it.
+
+[![Star History Chart](https://api.star-history.com/svg?repos=unison-labs-ai/cursor-unison&type=Date)](https://star-history.com/#unison-labs-ai/cursor-unison&Date)
+
+---
+
+## Part of the Unison Labs constellation
+
+**One brain, every agent.** Every repo below reads from _and writes to_ the same [Unison brain](https://unisonlabs.ai) — no per-tool memory silos.
+
+| Repo | What it does |
+|---|---|
+| [unison-brain](https://github.com/unison-labs-ai/unison-brain) | CLI · SDK · MCP server — the core |
+| [claude-unison](https://github.com/unison-labs-ai/claude-unison) | Memory for Claude Code |
+| **[cursor-unison](https://github.com/unison-labs-ai/cursor-unison)** | **Memory for Cursor ← you are here** |
+| [codex-unison](https://github.com/unison-labs-ai/codex-unison) | Memory for OpenAI Codex CLI |
+| [opencode-unison](https://github.com/unison-labs-ai/opencode-unison) | Memory for OpenCode |
+| [openclaw-unison](https://github.com/unison-labs-ai/openclaw-unison) | Memory for OpenClaw |
+| [pipecat-unison](https://github.com/unison-labs-ai/pipecat-unison) | Memory for Pipecat voice agents |
+| [python-sdk](https://github.com/unison-labs-ai/python-sdk) | Python SDK for the brain |
+| [install-mcp](https://github.com/unison-labs-ai/install-mcp) | One-command MCP installer |
+| [code-chunk](https://github.com/unison-labs-ai/code-chunk) | AST-aware code chunking |
+| [unison-fs](https://github.com/unison-labs-ai/unison-fs) | Mount the brain as a filesystem |
+| [backchannel](https://github.com/unison-labs-ai/backchannel) | Async messaging between agents |
+| [Unison-evals](https://github.com/unison-labs-ai/Unison-evals) | Open memory benchmark suite |
