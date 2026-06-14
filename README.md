@@ -8,6 +8,8 @@
 
 Persistent AI memory for Cursor — powered by the [Unison brain](https://unisonlabs.ai).
 
+**Not a flat vector store.** Temporal facts that know *what changed when*, [entity resolution](https://github.com/unison-labs-ai/unison-brain#the-hard-part--what-every-memory-system-gets-wrong) that knows *who's who*, and one source of truth shared across every agent and teammate.
+
 [![CI](https://github.com/unison-labs-ai/cursor-unison/actions/workflows/ci.yml/badge.svg)](https://github.com/unison-labs-ai/cursor-unison/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Stars](https://img.shields.io/github/stars/unison-labs-ai/cursor-unison?style=social)](https://github.com/unison-labs-ai/cursor-unison)
@@ -27,6 +29,8 @@ Persistent AI memory for Cursor — powered by the [Unison brain](https://unison
 | Switch machines or repos → blank slate | One brain, every machine, every project — context travels with you |
 | `@codebase` search finds code; it forgets what you decided and why | `unison_search` finds decisions, people, patterns — the *why*, not just the code |
 | Teammate onboards and re-asks every question you've already answered | `/workspace/...` docs are visible to your whole workspace, not just you |
+| A vector store returns a fact that went stale after you changed your mind | Bitemporal supersession stops surfacing the version that's no longer true; entity resolution keeps *who's who* straight |
+| "Trust our benchmark" | An [open, reproducible benchmark](https://github.com/unison-labs-ai/Unison-evals) scores every memory system — including ours |
 
 ---
 
