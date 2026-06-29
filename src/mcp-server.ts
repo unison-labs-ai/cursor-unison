@@ -158,7 +158,7 @@ export async function startMcpServer() {
         query: z.string().describe("Search query"),
         limit: z.number().int().min(1).max(50).default(10).describe("Max results (1-50)"),
         kinds: z
-          .array(z.enum(["wiki_page", "raw", "note", "log", "index"]))
+          .array(z.enum(["wiki_page", "raw", "log", "index"]))
           .optional()
           .describe("Filter by document kind"),
         tags: z.array(z.string()).optional().describe("Filter by tags"),
@@ -287,7 +287,7 @@ export async function startMcpServer() {
       inputSchema: {
         prefix: z.string().optional().describe("Path prefix filter, e.g. /private/notes/"),
         kinds: z
-          .array(z.enum(["wiki_page", "raw", "note", "log", "index"]))
+          .array(z.enum(["wiki_page", "raw", "log", "index"]))
           .optional(),
         tags: z.array(z.string()).optional(),
         limit: z.number().int().min(1).max(200).default(20),
@@ -356,7 +356,7 @@ export async function startMcpServer() {
       inputSchema: {
         name: z.string().describe("Entity display name to resolve"),
         kindHint: z
-          .enum(["person", "company", "project", "decision", "topic", "mail_thread", "event", "task", "doc"])
+          .enum(["person", "company", "project", "decision", "doc"])
           .optional(),
       },
     },
