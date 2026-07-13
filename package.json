@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "typescript": "^6"
+    "typescript": "^7"
   },
   "files": ["dist", "rules", "skills", "commands", "hooks", ".cursor-plugin", ".cursor", ".mcp.json"],
   "keywords": ["cursor", "unison", "mcp", "memory", "brain", "ai", "plugin"],
